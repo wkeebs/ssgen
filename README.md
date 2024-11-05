@@ -1,4 +1,4 @@
-# Static Site Generator
+# Static Site Generator 📄
 
 This is a simple static site generator I built in Python.
 
