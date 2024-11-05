@@ -24,28 +24,21 @@ def split_nodes_delimiter(old_nodes: List[TextNode], delimiter: str, text_type: 
     # split the nodes
     for old_node in old_nodes:
         split_text = old_node.text.split(delimiter)
+
+        if len(split_text) % 2 == 0:
+            raise ValueError("Invalid markdown: formatted section not closed")
+
         for idx, text in enumerate(split_text):
-            if idx % 2 == 0:
-                # the new nodes will have odd indices
-                # because of how .split() works
-                new_nodes.append(TextNode(text=text, text_type=old_node.text_type))
+            if text == "":
+                # .split() generates empty strings if nothing exists
+                # before or after the delimiter
                 continue
-            new_node = TextNode(text=text, text_type=text_type)
-            new_nodes.append(new_node)
 
-    # filter out empty text nodes for brevity
-    empty_node = TextNode("", TextType.TEXT)
-    return list(filter(lambda n: n != empty_node, new_nodes))
+            # the formatted nodes have odd indices
+            if idx % 2 == 0:
+                new_nodes.append(
+                    TextNode(text=text, text_type=old_node.text_type))
+            else:
+                new_nodes.append(TextNode(text=text, text_type=text_type))
 
-
-if __name__ == "__main__":
-    nodes = [
-            TextNode("This is text with a `code block` word", TextType.TEXT),
-            TextNode("This is text *with some* italics", TextType.TEXT),
-            TextNode("This is **text with some bold**", TextType.TEXT),
-            TextNode("This is normal text!", TextType.TEXT)
-        ]
-    bold_split = split_nodes_delimiter(nodes, "**", TextType.BOLD)
-    italic_split = split_nodes_delimiter(bold_split,"*",TextType.ITALICS)
-    new_nodes = split_nodes_delimiter(italic_split, "`", TextType.CODE)
-    print(new_nodes)
+    return new_nodes
