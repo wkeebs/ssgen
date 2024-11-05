@@ -13,4 +13,4 @@ To convert the markdown content, the generator first converts it to an
 internal format of `HTMLNode`s, and then translates that into a valid HTML
 representation which is then generated as a .html file for each .md file.
 
-'Markdown Files (.md) -> HTMLNode -> HTML Files (.html)`
+`Markdown Files (.md) -> HTMLNode -> HTML Files (.html)`
