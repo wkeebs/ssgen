@@ -6,7 +6,7 @@ class ParentNode(HTMLNode):
     def __init__(self, tag: str = None, children: List[HTMLNode] = [], props: Dict[str, str] = None) -> None:
         """
         : @summary :
-        Represents a "Parent" HTML node - one that has some nested children
+        Represents a "Parent" HTML node - one that has some (>=1) nested children
         ___________________
 
         : @args :

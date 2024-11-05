@@ -11,12 +11,12 @@ class TestTextNode(unittest.TestCase):
 
     def test_repr(self):
         node1 = TextNode("This is a text node", TextType.BOLD)
-        exp_repr1 = "TextNode(This is a text node, bold, None)"
+        exp_repr1 = "TextNode(\"This is a text node\", Type: bold, URL: None)"
         self.assertEqual(str(node1), exp_repr1)
 
         node2 = TextNode("This is a text node",
                          TextType.BOLD, "www.keeble.tech")
-        exp_repr2 = "TextNode(This is a text node, bold, www.keeble.tech)"
+        exp_repr2 = "TextNode(\"This is a text node\", Type: bold, URL: www.keeble.tech)"
         self.assertEqual(str(node2), exp_repr2)
 
     def test_not_eq(self):
