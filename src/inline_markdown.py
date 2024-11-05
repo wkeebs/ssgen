@@ -3,6 +3,26 @@ from text_node import TextNode, TextType
 from types import FunctionType
 
 def text_to_textnodes(text: str) -> list[TextNode]:
+    """
+    : @summary :
+    Converts some text to TextNode format.
+        1. Converts base string to TextNode.
+        2. Chains curried splitter functions for:
+            * bold text
+            * italic text
+            * code text
+            * images
+            * links
+    ___________________
+
+    : @args :
+        * text (str): _description_
+    ___________________
+
+    : @returns : 
+        * list[TextNode]: _description_
+    ___________________
+    """
     bold_split = split_nodes_delimiter("**", TextType.BOLD)
     italic_split = split_nodes_delimiter("*", TextType.ITALICS)
     code_split = split_nodes_delimiter("`", TextType.CODE)
@@ -26,8 +46,7 @@ def text_to_textnodes(text: str) -> list[TextNode]:
 def split_nodes_delimiter(delimiter: str, text_type: TextType) -> list[TextNode]:
     """
     : @summary :
-    (CURRIED)
-    Splits a list of text nodes by a delimiter and supplied type
+    [**CURRIED**] Splits a list of text nodes by a delimiter and supplied type.
     ___________________
 
     : @args :
