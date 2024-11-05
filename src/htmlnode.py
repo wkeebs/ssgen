@@ -13,7 +13,25 @@ class HTMLNode:
         raise NotImplementedError
     
     def props_to_html(self):
+        if self.props is None:
+            return ""
+        
         out = ""
         for key, val in self.props.items():
             out += f" {key}=\"{val}\""
         return out
+    
+class LeafNode(HTMLNode):
+    def __init__(self, value, tag=None, props=None):
+        super().__init__(tag, value, None, props)
+        
+    def to_html(self):
+        if self.value is None:
+            raise ValueError("All leaf nodes must have a value")
+        
+        # if there is no tag, return just the value 
+        if self.tag is None:
+            return self.value
+        
+        # otherwise render a HTML tag
+        return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
