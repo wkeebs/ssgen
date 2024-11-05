@@ -49,15 +49,15 @@ This is then converted to the following HTML:
 <a href="https://github.com/wkeebs/ssgen">A link</a>
 ```
 
-This would then be rendered as:
+This would then be rendered as something like:
 
-# My Heading
+## My Heading
 
-## My Subheading 1
+### My Subheading 1
 
 Content content content
 
-### My Subheading 2
+#### My Subheading 2
 
 Hello World!
 [A link](https://github.com/wkeebs/ssgen)
