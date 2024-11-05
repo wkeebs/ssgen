@@ -1,17 +1,17 @@
 import unittest
-from inline import extract_markdown_images, extract_markdown_links, split_nodes_delimiter, split_nodes_image, split_nodes_link
+from inline_markdown import extract_markdown_images, extract_markdown_links, split_nodes_delimiter, split_nodes_image, split_nodes_link
 from text_node import TextNode, TextType
 
 
 class TestInlineMarkdown(unittest.TestCase):
     def test_no_split(self):
         node = TextNode("This is a text node with no code", TextType.TEXT)
-        new_nodes = split_nodes_delimiter([node], "`", TextType.CODE)
+        new_nodes = split_nodes_delimiter("`", TextType.CODE)([node])
         self.assertEqual(new_nodes, [node])
 
     def test_code(self):
         node = TextNode("This is text with a `code block` word", TextType.TEXT)
-        new_nodes = split_nodes_delimiter([node], "`", TextType.CODE)
+        new_nodes = split_nodes_delimiter("`", TextType.CODE)([node])
         expected = [
             TextNode("This is text with a ", TextType.TEXT),
             TextNode("code block", TextType.CODE),
@@ -22,7 +22,7 @@ class TestInlineMarkdown(unittest.TestCase):
     def test_split_into_multiple(self):
         node = TextNode(
             "**This** is a text **node** with multiple **bold words**", TextType.TEXT)
-        new_nodes = split_nodes_delimiter([node], "**", TextType.BOLD)
+        new_nodes = split_nodes_delimiter("**", TextType.BOLD)([node])
         expected = [
             TextNode("This", TextType.BOLD),
             TextNode(" is a text ", TextType.TEXT),
@@ -40,9 +40,14 @@ class TestInlineMarkdown(unittest.TestCase):
             TextNode("This is **text with some bold**", TextType.TEXT),
             TextNode("This is normal text!", TextType.TEXT)
         ]
-        bold_split = split_nodes_delimiter(nodes, "**", TextType.BOLD)
-        italic_split = split_nodes_delimiter(bold_split, "*", TextType.ITALICS)
-        new_nodes = split_nodes_delimiter(italic_split, "`", TextType.CODE)
+        bold_split = split_nodes_delimiter("**", TextType.BOLD)
+        italic_split = split_nodes_delimiter("*", TextType.ITALICS)
+        code_split = split_nodes_delimiter("`", TextType.CODE)
+        
+        splitters = [bold_split, italic_split, code_split]
+        for splitter in splitters:
+            nodes = splitter(nodes)
+        
         expected = [
             TextNode("This is text with a ", TextType.TEXT),
             TextNode("code block", TextType.CODE),
@@ -54,7 +59,7 @@ class TestInlineMarkdown(unittest.TestCase):
             TextNode("text with some bold", TextType.BOLD),
             TextNode("This is normal text!", TextType.TEXT)
         ]
-        self.assertEqual(new_nodes, expected)
+        self.assertEqual(nodes, expected)
 
     def test_extract_markdown_images(self):
         matches = extract_markdown_images(

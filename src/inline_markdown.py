@@ -2,10 +2,31 @@ import re
 from text_node import TextNode, TextType
 from types import FunctionType
 
+def text_to_textnodes(text: str) -> list[TextNode]:
+    bold_split = split_nodes_delimiter("**", TextType.BOLD)
+    italic_split = split_nodes_delimiter("*", TextType.ITALICS)
+    code_split = split_nodes_delimiter("`", TextType.CODE)
+    
+    splitters = [
+        bold_split,
+        italic_split,
+        code_split,
+        split_nodes_image,
+        split_nodes_link
+    ]
+    
+    node = TextNode(text, TextType.TEXT)
+    nodes = [node]
+    for splitter in splitters:
+        nodes = splitter(nodes)
+    
+    return nodes
 
-def split_nodes_delimiter(old_nodes: list[TextNode], delimiter: str, text_type: TextType) -> list[TextNode]:
+
+def split_nodes_delimiter(delimiter: str, text_type: TextType) -> list[TextNode]:
     """
     : @summary :
+    (CURRIED)
     Splits a list of text nodes by a delimiter and supplied type
     ___________________
 
@@ -19,30 +40,31 @@ def split_nodes_delimiter(old_nodes: list[TextNode], delimiter: str, text_type: 
         * list[TextNode]: the new, split text nodes
     ___________________
     """
-    new_nodes = []
+    def split_nodes(old_nodes: list[TextNode]) -> list[TextNode]:
+        new_nodes = []
 
-    # split the nodes
-    for old_node in old_nodes:
-        split_text = old_node.text.split(delimiter)
+        # split the nodes
+        for old_node in old_nodes:
+            split_text = old_node.text.split(delimiter)
 
-        if len(split_text) % 2 == 0:
-            raise ValueError("Invalid markdown: formatted section not closed")
+            if len(split_text) % 2 == 0:
+                raise ValueError("Invalid markdown: formatted section not closed")
 
-        for idx, text in enumerate(split_text):
-            if text == "":
-                # .split() generates empty strings if nothing exists
-                # before or after the delimiter
-                continue
+            for idx, text in enumerate(split_text):
+                if text == "":
+                    # .split() generates empty strings if nothing exists
+                    # before or after the delimiter
+                    continue
 
-            # the formatted nodes have odd indices
-            if idx % 2 == 0:
-                new_nodes.append(
-                    TextNode(text=text, text_type=old_node.text_type))
-            else:
-                new_nodes.append(TextNode(text=text, text_type=text_type))
+                # the formatted nodes have odd indices
+                if idx % 2 == 0:
+                    new_nodes.append(
+                        TextNode(text=text, text_type=old_node.text_type))
+                else:
+                    new_nodes.append(TextNode(text=text, text_type=text_type))
 
-    return new_nodes
-
+        return new_nodes
+    return split_nodes
 
 def extract_markdown_images(text: str) -> list[tuple[str, str]]:
     """
@@ -150,8 +172,34 @@ def split_nodes(old_nodes: list[TextNode], replace_type: TextType, extract_funct
 
 
 def split_nodes_image(old_nodes: list[TextNode]) -> list[TextNode]:
+    """
+    : @summary :
+    Splits a list of nodes based on any images present in their text.
+    ___________________
+
+    : @args :
+        * old_nodes (list[TextNode]): the nodes
+    ___________________
+
+    : @returns : 
+        * list[TextNode]: the split nodes
+    ___________________
+    """
     return split_nodes(old_nodes=old_nodes, replace_type=TextType.IMAGE, extract_function=extract_markdown_images, expr_start="!")
 
 
 def split_nodes_link(old_nodes: list[TextNode]) -> list[TextNode]:
+    """
+    : @summary :
+    Splits a list of nodes based on any links present in their text.
+    ___________________
+
+    : @args :
+        * old_nodes (list[TextNode]): the nodes
+    ___________________
+
+    : @returns : 
+        * list[TextNode]: the split nodes
+    ___________________
+    """
     return split_nodes(old_nodes=old_nodes, replace_type=TextType.LINK, extract_function=extract_markdown_links)

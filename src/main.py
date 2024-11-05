@@ -1,13 +1,10 @@
 from text_node import TextNode, TextType
-from inline import extract_markdown_links, extract_markdown_images, split_nodes_image, split_nodes_link
+from inline_markdown import extract_markdown_links, extract_markdown_images, split_nodes_image, split_nodes_link, text_to_textnodes
 
 def main():
-    node = TextNode(
-            "This is text with the same image ![here](https://www.boot.dev) and ![here](https://www.boot.dev) and this is ![also here](www.keeble) and ![also here](www.keeble)",
-            TextType.TEXT,
-        )
-    new_nodes = split_nodes_image([node])
-    for n in new_nodes:
+    text = "This is **text** with an *italic* word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+    nodes = text_to_textnodes(text)
+    for n in nodes:
         print(n)
 
 
