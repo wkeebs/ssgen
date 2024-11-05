@@ -1,9 +1,8 @@
-from typing import Dict
 from html_node import HTMLNode
 
 
 class LeafNode(HTMLNode):
-    def __init__(self, tag: str = None, value: str = None, props: Dict[str, str] = None) -> None:
+    def __init__(self, tag: str = None, value: str = None, props: dict[str, str] = None) -> None:
         """
         : @summary :
         Represents a leaf node, i.e., a HTML node with no children

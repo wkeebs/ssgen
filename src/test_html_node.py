@@ -1,5 +1,4 @@
 import unittest
-
 from html_node import HTMLNode
 
 

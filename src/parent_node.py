@@ -1,9 +1,8 @@
-from typing import Dict, List
 from html_node import HTMLNode
 
 
 class ParentNode(HTMLNode):
-    def __init__(self, tag: str = None, children: List[HTMLNode] = [], props: Dict[str, str] = None) -> None:
+    def __init__(self, tag: str = None, children: list[HTMLNode] = [], props: dict[str, str] = None) -> None:
         """
         : @summary :
         Represents a "Parent" HTML node - one that has some (>=1) nested children
@@ -11,7 +10,7 @@ class ParentNode(HTMLNode):
 
         : @args :
             * tag (str, optional): the HTML tag. Defaults to None.
-            * children (List[HTMLNode], optional): any child nodes. Defaults to [].
+            * children (list[HTMLNode], optional): any child nodes. Defaults to [].
             * props (Dict[str, str], optional): the HTML properties. Defaults to None.
         ___________________
         """

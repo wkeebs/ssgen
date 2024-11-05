@@ -1,6 +1,5 @@
 from enum import Enum
 from typing import Self
-
 from leaf_node import LeafNode
 
 

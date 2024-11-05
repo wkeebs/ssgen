@@ -1,8 +1,8 @@
-from typing import List, Self, Dict
+from typing import Self
 
 
 class HTMLNode:
-    def __init__(self, tag: str = None, value: str = None, children: List[Self] = None, props: Dict[str, str] = None) -> None:
+    def __init__(self, tag: str = None, value: str = None, children: list[Self] = None, props: dict[str, str] = None) -> None:
         """
         : @summary :
         Represents a general HTML node
@@ -11,7 +11,7 @@ class HTMLNode:
         : @args :
             * tag (str, optional): the tag type of the node (e.g., "a" for <a>). Defaults to None.
             * value (str, optional): the value inside the node (e.g., <p>value here</p>). Defaults to None.
-            * children (List[HTMLNode], optional): any nested child nodes. Defaults to None.
+            * children (list[HTMLNode], optional): any nested child nodes. Defaults to None.
             * props (Dict[str, str]), optional): the properties of the node. Defaults to None.
         ___________________
         """

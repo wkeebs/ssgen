@@ -1,5 +1,4 @@
 import unittest
-
 from leaf_node import LeafNode
 
 

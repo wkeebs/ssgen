@@ -1,5 +1,4 @@
 import unittest
-
 from text_node import *
 
 
