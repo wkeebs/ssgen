@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Self
 
-from htmlnode import LeafNode
+from leaf_node import LeafNode
 
 
 class TextType(Enum):
