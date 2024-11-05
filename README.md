@@ -48,3 +48,16 @@ This is then converted to the following HTML:
 <p>Hello world!</p>
 <a href="https://github.com/wkeebs/ssgen">A link</a>
 ```
+
+This would then be rendered as:
+
+# My Heading
+
+## My Subheading 1
+
+Content content content
+
+### My Subheading 2
+
+Hello World!
+[A link](https://github.com/wkeebs/ssgen)
