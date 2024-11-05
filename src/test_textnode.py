@@ -1,6 +1,6 @@
 import unittest
 
-from textnode import TextNode, TextType
+from textnode import *
 
 
 class TestTextNode(unittest.TestCase):
@@ -38,6 +38,50 @@ class TestTextNode(unittest.TestCase):
         node8 = TextNode("This is a text node",
                          TextType.BOLD, "www.keeble.tech")
         self.assertNotEqual(node7, node8)
+
+
+class TestTextNodeToHTML(unittest.TestCase):
+    def test_text(self):
+        text_node = TextNode("This is a text node", TextType.TEXT)
+        leaf_node = text_node_to_html_node(text_node)
+        self.assertTrue(isinstance(leaf_node, LeafNode))
+        self.assertEqual(leaf_node.to_html(), "This is a text node")
+
+    def test_bold(self):
+        text_node = TextNode("This is a bold node", TextType.BOLD)
+        leaf_node = text_node_to_html_node(text_node)
+        self.assertTrue(isinstance(leaf_node, LeafNode))
+        self.assertEqual(leaf_node.to_html(), "<b>This is a bold node</b>")
+
+    def test_italics(self):
+        text_node = TextNode("This is a italic node", TextType.ITALICS)
+        leaf_node = text_node_to_html_node(text_node)
+        self.assertTrue(isinstance(leaf_node, LeafNode))
+        self.assertEqual(leaf_node.to_html(), "<i>This is a italic node</i>")
+
+    def test_code(self):
+        text_node = TextNode("This is a code node", TextType.CODE)
+        leaf_node = text_node_to_html_node(text_node)
+        self.assertTrue(isinstance(leaf_node, LeafNode))
+        self.assertEqual(leaf_node.to_html(),
+                         "<code>This is a code node</code>")
+
+    def test_link(self):
+        url = "www.google.com"
+        text_node = TextNode("This is a link", TextType.LINK, url)
+        leaf_node = text_node_to_html_node(text_node)
+        self.assertTrue(isinstance(leaf_node, LeafNode))
+        self.assertEqual(leaf_node.to_html(), f'<a href="{
+                         url}">This is a link</a>')
+
+    def test_image(self):
+        src = "/images/image.png"
+        text = "This is an image"
+        text_node = TextNode(text, TextType.IMAGE, url=src)
+        leaf_node = text_node_to_html_node(text_node)
+        self.assertTrue(isinstance(leaf_node, LeafNode))
+        self.assertEqual(leaf_node.to_html(), f'<img src="{
+                         src}" alt="{text}"></img>')
 
 
 if __name__ == "__main__":
