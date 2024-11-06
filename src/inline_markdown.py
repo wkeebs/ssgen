@@ -8,11 +8,7 @@ def text_to_textnodes(text: str) -> list[TextNode]:
     Converts some text to TextNode format.
         1. Converts base string to TextNode.
         2. Chains curried splitter functions for:
-            * bold text
-            * italic text
-            * code text
-            * images
-            * links
+            * bold -> italic -> code -> images -> links
     ___________________
 
     : @args :
@@ -27,12 +23,14 @@ def text_to_textnodes(text: str) -> list[TextNode]:
     italic_split = split_nodes_delimiter("*", TextType.ITALICS)
     code_split = split_nodes_delimiter("`", TextType.CODE)
     
+    # all splitter functions
+    # NOTE: bold must come before italics as the syntax is a superset
     splitters = [
         bold_split,
         italic_split,
         code_split,
         split_nodes_image,
-        split_nodes_link
+        split_nodes_link,
     ]
     
     node = TextNode(text, TextType.TEXT)

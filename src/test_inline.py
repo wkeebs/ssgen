@@ -1,9 +1,29 @@
 import unittest
-from inline_markdown import extract_markdown_images, extract_markdown_links, split_nodes_delimiter, split_nodes_image, split_nodes_link
+from inline_markdown import *
 from text_node import TextNode, TextType
 
 
 class TestInlineMarkdown(unittest.TestCase):
+    def test_text_to_textnodes(self):
+        text = "This is **text** with an *italic* word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+        nodes = text_to_textnodes(text)
+        expected = [
+            TextNode("This is ", TextType.TEXT),
+            TextNode("text", TextType.BOLD),
+            TextNode(" with an ", TextType.TEXT),
+            TextNode("italic", TextType.ITALICS),
+            TextNode(" word and a ", TextType.TEXT),
+            TextNode("code block", TextType.CODE),
+            TextNode(" and an ", TextType.TEXT),
+            TextNode("obi wan image", TextType.IMAGE,
+                     "https://i.imgur.com/fJRm4Vk.jpeg"),
+            TextNode(" and a ", TextType.TEXT),
+            TextNode("link", TextType.LINK, "https://boot.dev"),
+        ]
+        self.assertListEqual(nodes, expected)
+
+
+class TestInlineMarkdownSplitting(unittest.TestCase):
     def test_no_split(self):
         node = TextNode("This is a text node with no code", TextType.TEXT)
         new_nodes = split_nodes_delimiter("`", TextType.CODE)([node])
@@ -43,11 +63,11 @@ class TestInlineMarkdown(unittest.TestCase):
         bold_split = split_nodes_delimiter("**", TextType.BOLD)
         italic_split = split_nodes_delimiter("*", TextType.ITALICS)
         code_split = split_nodes_delimiter("`", TextType.CODE)
-        
+
         splitters = [bold_split, italic_split, code_split]
         for splitter in splitters:
             nodes = splitter(nodes)
-        
+
         expected = [
             TextNode("This is text with a ", TextType.TEXT),
             TextNode("code block", TextType.CODE),
@@ -171,7 +191,7 @@ class TestSplitInlineMarkdown(unittest.TestCase):
             TextNode("also here", TextType.IMAGE, "www.keeble"),
         ]
         self.assertListEqual(new_nodes, expected)
-        
+
     def test_split_one_link(self):
         node = TextNode(
             "This is text with a link [to boot dev](https://www.boot.dev)",
