@@ -1,11 +1,14 @@
 from text_node import TextNode, TextType
 from inline_markdown import text_to_textnodes
+from block_markdown import *
 
 def main():
-    text = "This is **text** with an *italic* word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
-    nodes = text_to_textnodes(text)
-    for n in nodes:
-        print(n)
+    text = \
+"""1.  
+3.  test
+3. list"""
+    print(block_to_block_type(text))
+    
 
 
 if __name__ == "__main__":
