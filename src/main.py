@@ -1,10 +1,11 @@
-from copy_contents import copy_dir_contents
+from generate_page import extract_title
 
 def main():
-    src = "static/"
-    dest = "public/"
-    copy_dir_contents(src, dest)
-    
+    text = """## Test
+  #      MY TITLE
+  
+"""    
+    print(extract_title(text))
 
 
 if __name__ == "__main__":
