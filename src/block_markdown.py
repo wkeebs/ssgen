@@ -100,3 +100,59 @@ def block_to_block_type(block: str) -> BlockType:
             return BlockType.ORDERED_LIST
         case _:
             return BlockType.PARAGRAPH
+
+
+def block_type_to_html_tag(type: BlockType) -> str:
+    """
+    : @summary :
+    Converts a given BlockType to its corresponding HTML tag.
+    ___________________
+
+    : @args :
+        * type (BlockType): the block type
+    ___________________
+
+    : @returns : 
+        * str: the html tag
+    ___________________
+    """
+    match type:
+        case BlockType.PARAGRAPH:
+            return "p"
+        case BlockType.HEADING:
+            # NOTE: Use the get_heading_level to get the correct heading tag
+            return "h1"
+        case BlockType.CODE:
+            return "pre"
+        case BlockType.QUOTE:
+            return "blockquote"
+        case BlockType.UNORDERED_LIST:
+            return "ul"
+        case BlockType.ORDERED_LIST:
+            return "ol"
+        case _:
+            return "p"
+
+
+def get_heading_level(block: str) -> int:
+    """
+    : @summary :
+    Determines the level of heading for a given block of markdown.
+    ___________________
+
+    : @args :
+        * block (str): the heading text
+    ___________________
+
+    : @returns : 
+        * int: the level of heading [1-6]
+    ___________________
+    """
+    level = 0
+    for char in block:
+        if char != '#':
+            break
+        level += 1
+    if level == 0 or level > 6 or block[level] != ' ':
+        return -1  # invalid heading level / format
+    return level

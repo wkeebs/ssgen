@@ -30,7 +30,23 @@ class HTMLNode:
             * str: the repr
         ___________________
         """
-        return f"HTMLNode | Tag: '{self.tag}', Value: '{self.value}', Children: '{self.children}', Props: '{self.props}'"
+        repr = "-- HTMLNode --\n"
+        if self.tag is not None:
+            repr += f"-- Tag: {self.tag}\n"
+        if self.value is not None:
+            repr += f"-- Value: {self.value}\n"
+        if self.children is not None:
+            for node in self.children:
+                node_str = str(node)
+                lines = node_str.split("\n")
+                for l in lines:
+                    repr += f"    {l}\n"
+        if self.props is not None:
+            repr += "-- Props:\n"
+            for key, val in self.props.items():
+                repr += f"    {key}={val}\n"
+        return repr
+        
 
     def to_html(self) -> NotImplementedError:
         """
