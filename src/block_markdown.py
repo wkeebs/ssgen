@@ -1,5 +1,10 @@
 from enum import Enum
 
+from html_node import HTMLNode
+from leaf_node import LeafNode
+from parent_node import ParentNode
+from inline_markdown import text_to_children
+
 
 class BlockType(Enum):
     """
@@ -156,3 +161,32 @@ def get_heading_level(block: str) -> int:
     if level == 0 or level > 6 or block[level] != ' ':
         return -1  # invalid heading level / format
     return level
+
+
+def text_to_list_nodes(block: str, block_type: BlockType) -> list[HTMLNode]:
+    """
+    : @summary :
+    Converts markdown text representing a list to HTML nodes.
+    ___________________
+
+    : @args :
+        * block (str): valid list markdown
+        * block_type (BlockType): the type of list to convert to
+    ___________________
+
+    : @returns : 
+        * list[HTMLNode]: corresponding nodes
+    ___________________
+    """
+    lines = block.split("\n")
+    match block_type:
+        case BlockType.UNORDERED_LIST:
+            # remove the "* " or "- " from each line and create a node
+            return list(map(lambda l: ParentNode(tag="li", children=text_to_children(l[2:])), lines))
+
+        case BlockType.ORDERED_LIST:
+            # remove the "x. " from each line and create a node
+            return list(map(lambda l: ParentNode(tag="li", children=text_to_children(l[3:])), lines))
+
+        case _:
+            raise Exception(f"Invalid block_type: {block_type}")

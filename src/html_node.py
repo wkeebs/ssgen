@@ -30,11 +30,11 @@ class HTMLNode:
             * str: the repr
         ___________________
         """
-        repr = "-- HTMLNode --\n"
+        repr = f"{self.__class__.__name__}\n"
         if self.tag is not None:
-            repr += f"-- Tag: {self.tag}\n"
+            repr += f"Tag: {self.tag}\n"
         if self.value is not None:
-            repr += f"-- Value: {self.value}\n"
+            repr += f"Value:\n\"{self.value}\"\n"
         if self.children is not None:
             for node in self.children:
                 node_str = str(node)

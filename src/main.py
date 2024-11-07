@@ -15,7 +15,9 @@ def main():
 this is some **bold** paragraph text
 
 ```
-This is a code block with some code in it
+def main():
+    print("Hello world!")
+    return 696969
 ```
 
 > this is a quote

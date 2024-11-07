@@ -1,5 +1,6 @@
 import re
-from text_node import TextNode, TextType
+from html_node import HTMLNode
+from text_node import TextNode, TextType, text_node_to_html_node
 from types import FunctionType
 
 def text_to_textnodes(text: str) -> list[TextNode]:
@@ -220,3 +221,26 @@ def split_nodes_link(old_nodes: list[TextNode]) -> list[TextNode]:
     ___________________
     """
     return split_nodes(old_nodes=old_nodes, replace_type=TextType.LINK, extract_function=extract_markdown_links)
+
+def text_to_children(text: str) -> list[HTMLNode]:
+    """
+    : @summary :
+    Takes a string of text and returns a list of HTMLNodes that represents
+    the lines of inline markdown.
+    ___________________
+
+    : @args :
+        * text (str): the text to convert
+    ___________________
+
+    : @returns : 
+        * list[LeafNode]: the nodes
+    ___________________
+    """
+    # convert to TextNodes
+    text_nodes = text_to_textnodes(text)
+
+    # convert to HTMLNodes
+    html_nodes = list(map(text_node_to_html_node, text_nodes))
+
+    return html_nodes
