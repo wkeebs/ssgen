@@ -27,7 +27,7 @@ def copy_dir_contents(src: str, dest: str) -> bool:
         print(f"Destination does not exist: {dest}")
         return False
 
-    print(f"Cleaning {dest} ...")
+    # print(f"Cleaning {dest} ...")
 
     # clean the destination directory
     for filename in os.listdir(dest):
@@ -41,8 +41,8 @@ def copy_dir_contents(src: str, dest: str) -> bool:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
             return False
 
-    print(f"{dest} successfully cleaned")
-    print(f"Copying {src} into {dest} ...")
+    # print(f"{dest} successfully cleaned")
+    # print(f"Copying {src} into {dest} ...")
     success = copy_contents(src, dest)
     return success
 
@@ -67,10 +67,10 @@ def copy_contents(src: str, dir: str) -> bool:
         try:
             new_path = os.path.join(dir, filename)
             if os.path.isfile(file_path) or os.path.islink(file_path):
-                print(f"File: {file_path} -> {new_path}")
+                # print(f"File: {file_path} -> {new_path}")
                 shutil.copy(file_path, new_path)
             elif os.path.isdir(file_path):
-                print(f"Dir: {new_path} -> {new_path}")
+                # print(f"Dir: {new_path} -> {new_path}")
                 new_dir = dir + filename
                 os.mkdir(new_dir)
                 copy_contents(file_path, new_dir)
