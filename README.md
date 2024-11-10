@@ -2,20 +2,15 @@
 
 This is a simple static site generator I built in Python.
 
-## Markdown
-
-The generator takes **markdown** files as input, and generates static
-HTML output based on the content provided.
+The generator takes **markdown** files as input, and generates static HTML output based on the content provided.
 
 ## Conversion
 
-To create the HTML content, the generator first converts the markdown to an
-internal format of `HTMLNode`s, and then translates that into a valid HTML
-representation which is then generated as a .html file for each .md file.
+To create the HTML content, the generator first converts the markdown to an internal format of `HTMLNode`s, and then translates that into a valid HTML representation which is then generated as a .html file for each .md file.
 
 `Markdown Files (.md) -> HTMLNodes -> HTML Files (.html)`
 
-So, for example, we might translate the following markdown:
+So, for example, we might take the following markdown:
 
 ```markdown
 # My Heading
@@ -32,19 +27,61 @@ Hello World!
 [A link](https://github.com/wkeebs/ssgen)
 ```
 
-And represent the internal structure as something like:
+And transform it into some internal structure that looks something like:
 
 ```text
-h1: value="My Heading"
-h2: value="My Subheading 1"
-ul: children=[
-    li: value="this is a list item",
-    li: value="so is this",
-    li: value="and this"
-]
-h3: value="My Subheading 2"
-p: value="Hello world!"
-a: value="A link", url="https://github.com/wkeebs/ssgen"
+ParentNode
+Tag: div
+    ParentNode
+    Tag: h1
+        LeafNode
+        Value:
+        "My Heading"
+
+    ParentNode
+    Tag: h2
+        LeafNode
+        Value:
+        "My Subheading 1"
+
+    ParentNode
+    Tag: ul
+        ParentNode
+        Tag: li
+            LeafNode
+            Value:
+            "this is a list item"
+
+        ParentNode
+        Tag: li
+            LeafNode
+            Value:
+            "so is this"
+
+        ParentNode
+        Tag: li
+            LeafNode
+            Value:
+            "and this"
+
+    ParentNode
+    Tag: h3
+        LeafNode
+        Value:
+        "My Subheading 2"
+
+    ParentNode
+    Tag: p
+        LeafNode
+        Value:
+        "Hello World! "
+
+        LeafNode
+        Tag: a
+        Value:
+        "A link"
+        -- Props:
+            href=https://github.com/wkeebs/ssgen
 ```
 
 This is then converted to the following HTML:
@@ -80,3 +117,11 @@ Hello World!
 [A link](https://github.com/wkeebs/ssgen)
 
 ---
+
+## Using the Generator
+
+When the `main.sh` script is executed, the following occurs:
+
+1. Any files placed in the `static/` directory are first copied into the `public/` directory; overwriting the previous content.
+2. Then, the markdown content from `content/` is transformed into HTML, which is also outputted into `public/`.
+3. Finally, a Python web server is started to view the content.
